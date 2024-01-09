@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package company;
+option go_package = "github.com/tcxcn/vehicle_manager_server/service/accountcenter/rpcclient/company";
+
+
+import "account/account.proto";
+
+message Company {
+  int64 tenant = 1;
+  string name = 2;
+  string province = 3;
+  string city = 4;
+  string district = 5;
+  string districtCode = 6;
+}
+
+message GetCompaniesRequest {}
+message GetCompaniesResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  repeated Company Companies = 4;
+}
+
+message GetAccountsRequest {
+  int64 tenant = 1;
+}
+message GetAccountsResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  repeated account.Account accounts = 4;
+}
+
+message GetSuperAccountRequest {
+  int64 tenant = 1;
+}
+message GetSuperAccountResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  account.Account account = 4;
+}
+
+message GetSuperAccountsRequest {}
+message GetSuperAccountsResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  repeated account.Account accounts = 5;
+}
+
+message GetCompanyByTenantRequest {
+  int64 tenant = 1;
+}
+
+message GetCompaniesByProvinceRequest {
+  string province = 1;
+}
+
+message GetCompanyResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  Company Company = 4;
+}
+
+service CompanyService {
+  rpc GetCompanies(GetCompaniesRequest) returns(GetCompaniesResponse);
+  rpc GetAccounts(GetAccountsRequest) returns(GetAccountsResponse);
+  rpc GetSuperAccount(GetSuperAccountRequest) returns(GetSuperAccountResponse);
+  rpc GetSuperAccounts(GetSuperAccountsRequest) returns(GetSuperAccountsResponse);
+  rpc GetCompanyByTenant(GetCompanyByTenantRequest) returns(GetCompanyResponse);
+  rpc GetCompaniesByProvince(GetCompaniesByProvinceRequest) returns(GetCompaniesResponse);
+}

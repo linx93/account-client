@@ -1,0 +1,59 @@
+syntax = "proto3";
+package account;
+option go_package = "github.com/tcxcn/vehicle_manager_server/service/accountcenter/rpcclient/account";
+
+message Account {
+  int64 id = 1;
+  int64 tenant = 2;
+  string name = 3;
+  string username = 4;
+  int64 status = 5;
+  bool super = 6;
+  int64 createdAt = 7;
+  int64 updatedAt = 8;
+  int64 deletedAt = 9;
+}
+
+message LoginRequest {
+  int64 tenant = 1;
+  string username = 2;
+  string password = 3;
+}
+
+message LoginResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  Account account = 4;
+}
+
+message ChangePasswordRequest {
+  int64 tenant = 1;
+  string username = 2;
+  string password = 3;
+  string nextPassword = 4;
+}
+
+message ChangePasswordResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+}
+
+message BlockAccountRequest {
+  int64 tenant = 1;
+  string username = 2;
+  bool block = 4;
+}
+
+message BlockAccountResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+}
+
+service AccountService {
+  rpc Login(LoginRequest) returns(LoginResponse);
+  rpc ChangePassword(ChangePasswordRequest) returns(ChangePasswordResponse);
+  rpc Block(BlockAccountRequest) returns(BlockAccountResponse);
+}

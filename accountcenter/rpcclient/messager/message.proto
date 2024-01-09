@@ -1,0 +1,160 @@
+syntax = "proto3";
+
+package messager;
+
+option go_package = "github.com/tcxcn/account/grpc/pb/messager";
+
+message Template {
+  int64 id = 1;
+  int64 tenant = 2;
+  string appId = 3;
+  string title = 4;
+  string link = 5;
+  string message = 6;
+  int64 createdAt = 7;
+  int64 updatedAt = 8;
+}
+
+message Binding {
+  int64 id = 1;
+  int64 template = 2;
+  repeated int64 receivers = 3;
+  int64 createdAt = 7;
+  int64 updatedAt = 8;
+}
+
+message Message {
+  int64 id = 1;
+  int64 template = 2;
+  int64 user = 3;
+  int64 tenant = 4;
+  string appId = 5;
+  string link = 6;
+  string title = 7;
+  string message = 8;
+  int64 status = 9;
+  int64 createdAt = 10;
+  int64 updatedAt = 11;
+}
+
+message MessagePage {
+  int64 page = 1;
+  int64 size = 2;
+  int64 total = 3;
+  int64 tenant = 4;
+  repeated Message messages = 5;
+}
+
+message CreateTemplateRequest {
+  string title = 1;
+  string link = 2;
+  int64 tenant = 3;
+  string message = 4;
+}
+
+message CreateTemplateResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  Template templage = 4;
+}
+
+message GetTemplateRequest {
+  int64 id = 1;
+  int64 tenant = 2;
+}
+
+message GetTemplateResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  Template templage = 4;
+}
+
+
+message GetTemplatesRequest {
+  int64 tenant = 1;
+}
+
+message GetTemplatesResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  repeated Template templages = 4;
+}
+
+message CreateBindingRequest {
+  int64 template = 1;
+  int64 tenant = 2;
+  repeated int64 receivers = 3;
+}
+
+message CreateBindingResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  Binding binding = 4;
+}
+
+message SetReceiversRequest {
+  int64 template = 1;
+  int64 tenant = 2;
+  repeated int64 receivers = 3;
+}
+
+message SetReceiversResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+}
+
+message SendMessageRequest {
+  int64 templage = 1;
+  int64 tenant = 2;
+  map<string, string> linkArgs = 3;
+  map<string, string> msgArgs = 4;
+}
+
+message SendMessageResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  int64 count = 4;
+}
+
+message PageMessageRequest {
+  int64 user = 1;
+  int64 page = 2;
+  int64 size = 3;
+  int64 tenant = 4;
+}
+
+message PageMessageResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  MessagePage page = 4;
+}
+
+message MakeMessagesReadRequest {
+  int64 tenant = 1;
+  int64 user = 2;
+  repeated int64 messages = 3;
+}
+
+message MakeMessagesReadResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+}
+
+service MessageService {
+  rpc CreateTemplate(CreateTemplateRequest) returns(CreateTemplateResponse);
+  rpc GetTemplate(GetTemplateRequest) returns(GetTemplateResponse);
+  rpc GetTemplates(GetTemplatesRequest) returns(GetTemplatesResponse);
+  rpc CreateBinding(CreateBindingRequest) returns(CreateBindingResponse);
+  rpc SetReceivers(SetReceiversRequest) returns(SetReceiversResponse);
+  rpc SendMessage(SendMessageRequest) returns(SendMessageResponse);
+  rpc PageMessage(PageMessageRequest) returns(PageMessageResponse);
+  rpc MakeMessagesRead(MakeMessagesReadRequest) returns(MakeMessagesReadResponse);
+}

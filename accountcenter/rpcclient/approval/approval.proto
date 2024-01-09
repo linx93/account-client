@@ -1,0 +1,273 @@
+syntax = "proto3";
+
+package approval;
+option go_package = "github.com/tcxcn/account/grpc/pb/approval";
+
+// Step
+// 审批步骤
+message Step {
+  uint32 step = 1;     // 审批序列，从0开始
+  string name = 2;     // 审批人姓名
+  string username = 3; // 审批人用户名
+}
+
+// CC
+// 抄送人
+message CC {
+  string name = 1;     // 抄送人姓名
+  string username = 2; // 抄送人用户名
+}
+
+// Config
+// 配置审批
+message Config {
+  int64 id = 1;
+  int64 tenant = 2;
+  string appId = 3;
+  string business = 4;
+  bool enable = 5;
+  repeated Step steps = 6;
+  repeated CC CC = 7;
+  int64 createdAt = 8;
+  int64 updatedAt = 9;
+}
+
+// Approval
+// 审批实例
+message Approval {
+  int64 id = 1;
+  int64 tenant = 2;
+  string appId = 3;
+  string business = 4;
+  string applicantUsername = 5;
+  string applicantName = 6;
+  uint32 status = 7;
+  int64 createdAt = 8;
+  int64 updatedAt = 9;
+}
+
+// Sequence
+// 审批序列
+message Sequence {
+  int64 id = 1;
+  int64 approval = 2;
+  uint32 step = 3;
+  string name = 4;
+  string username = 5;
+  uint32 status = 6;
+  bool success = 7;
+  string remark = 8;
+  int64 createdAt = 9;
+  int64 updatedAt = 10;
+}
+
+
+message ApprovalPage {
+  int64 page = 1;
+  int64 size = 2;
+  int64 total = 3;
+  repeated Approval approvals = 4;
+}
+
+// CreateConfigRequest
+// 创建审批配置的参数
+message CreateConfigRequest {
+  int64 tenant = 1;
+  string business = 2;
+  repeated Step steps = 3;
+  repeated CC CC = 4;
+}
+
+// CreateConfigResponse
+// 创建审批配置的响应
+message CreateConfigResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  Config config = 4;
+}
+
+
+// GetConfigRequest
+// 获取审批配置的参数
+message GetConfigRequest {
+  int64 tenant = 1;
+  string business = 2;
+}
+
+// GetConfigResponse
+// 获取审批配置的响应
+message GetConfigResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  Config config = 4;
+}
+
+
+// GetConfigRequest
+// 获取应用租户所有审批配置的参数
+message GetConfigsRequest {
+  int64 tenant = 1;
+}
+
+// GetConfigsResponse
+// 获取审批配置的响应
+message GetConfigsResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  repeated Config configs = 4;
+}
+
+
+// CreateApprovalRequest
+// 创建一个审批实例的参数
+message CreateApprovalRequest {
+  int64 tenant = 1;
+  string business = 2;
+  string applicantUsername = 3;
+}
+
+// CreateApprovalResponse
+// 创建一个审批实例的响应
+message CreateApprovalResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  Approval approval = 4;
+  repeated Sequence sequences = 5;
+}
+
+
+// ApproveRequest
+// 同意一次审批的参数
+message ApproveRequest {
+  int64 tenant = 1;
+  int64 approval = 2;
+  string username = 3;
+}
+
+// ApproveResponse
+// 同意一次审批的响应
+message ApproveResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  Approval approval = 4;
+  repeated Sequence sequences = 5;
+}
+
+
+// DenyRequest
+// 拒绝一次审批的参数
+message DenyRequest {
+  int64 tenant = 1;
+  int64 approval = 2;
+  string username = 3;
+  string remark = 4;
+}
+
+// DenyResponse
+// 拒绝一次审批的响应
+message DenyResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  Approval approval = 4;
+  repeated Sequence sequences = 5;
+}
+
+
+// GetMyApprovalRequest
+// 获取我的待审批参数
+message GetMyApprovalRequest {
+  int64 tenant = 1;
+  string username = 2;
+}
+
+// GetMyApprovalResponse
+// 获取的待审批响应
+message GetMyApprovalResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  repeated Approval approvals = 4;
+}
+
+
+// PageMyApprovalRequest
+// 分页获取我的审批记录参数
+message PageMyApprovalRequest {
+  int64 tenant = 1;
+  string username = 2;
+  int64 page = 3;
+  int64 size = 4;
+}
+
+// PageMyApprovalResponse
+// 分页获取我的审批记录响应
+message PageMyApprovalResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  ApprovalPage page = 4;
+}
+
+// GetSequencesRequest
+// 获取审核实例的审核序列参数
+message GetSequencesRequest {
+  int64 tenant = 1;
+  int64 approval = 2;
+}
+
+// GetSequencesResponse
+// 获取审核实例的审核序列响应
+message GetSequencesResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  repeated Sequence sequences = 4;
+}
+
+
+// ApprovalService
+// 对外提供的审批服务
+service ApprovalService {
+
+  // CreateApprovalConfig
+  // 创建审批配置
+  rpc CreateApprovalConfig(CreateConfigRequest) returns(CreateConfigResponse);
+
+  // GetConfig
+  // 获取审批配置
+  rpc GetApprovalConfig(GetConfigRequest) returns(GetConfigResponse);
+
+  // GetConfigs
+  // 获取应用租户的所有审批配置
+  rpc GetApprovalConfigs(GetConfigsRequest) returns(GetConfigsResponse);
+
+  // CreateApproval
+  // 创建审批实例
+  rpc CreateApproval(CreateApprovalRequest) returns(CreateApprovalResponse);
+
+  // ApproveApproval
+  // 审批通过
+  rpc ApproveApproval(ApproveRequest) returns(ApproveResponse);
+
+  // DenyApproval
+  // 审批不通过
+  rpc DenyApproval(DenyRequest) returns(DenyResponse);
+
+  // GetMyApproval
+  // 获取我的待审批
+  rpc GetMyApproval(GetMyApprovalRequest) returns(GetMyApprovalResponse);
+
+  // PageMyApproval
+  // 分页获取我的审批记录
+  rpc PageMyApproval(PageMyApprovalRequest) returns(PageMyApprovalResponse);
+
+  // GetApprovalSequences
+  // 获取审核实例的审核序列
+  rpc GetApprovalSequences(GetSequencesRequest) returns(GetSequencesResponse);
+}

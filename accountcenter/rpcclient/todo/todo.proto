@@ -1,0 +1,100 @@
+syntax = "proto3";
+
+package todo;
+
+option go_package = "github.com/tcxcn/account/grpc/pb/todo";
+
+message Todo {
+  int64 id = 1;
+  int64 user = 2;
+  int64 tenant = 3;
+  string appId = 4;
+  string title = 5;
+  string link = 6;
+  int64 status = 7;
+  int64 deadLine = 8;
+  int64 createdAt = 9;
+  int64 updatedAt = 10;
+}
+
+message Remark {
+  int64 id = 1;
+  int64 todo = 2;
+  int64 createdAt = 3;
+  string remark = 4;
+}
+
+message TodoPage {
+  int64 page = 1;
+  int64 size = 2;
+  int64 total = 3;
+  repeated Todo todos = 4;
+}
+
+message CreateTodoRequest {
+  string title = 1;
+  string link = 2;
+  int64 user = 3;
+  int64 tenant = 4;
+  int64 deadLine = 5;
+}
+message CreateTodoResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  Todo todo = 4;
+}
+
+message GetTodosRequest {
+  int64 user = 1;
+  int64 tenant = 2;
+}
+message GetTodosResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  repeated Todo todos = 4;
+}
+
+message PageTodosRequest {
+  int64 page = 1;
+  int64 size = 2;
+  int64 tenant = 3;
+}
+message PageTodosResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  TodoPage page = 4;
+}
+
+message PushRemarkRequest {
+  int64 todo = 1;
+  int64 tenant = 2;
+  string remark = 3;
+}
+message PushRemarkResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  repeated Remark remarks = 4;
+}
+
+message GetRemarksRequest {
+  int64 todo = 1;
+  int64 tenant = 2;
+}
+message GetRemarksResponse {
+  bool ok = 1;
+  int64 code = 2;
+  string message = 3;
+  repeated Remark remarks = 4;
+}
+
+service TodoService {
+  rpc CreateTodo(CreateTodoRequest) returns(CreateTodoResponse);
+  rpc GetTodos(GetTodosRequest) returns(GetTodosResponse);
+  rpc PageTodos(PageTodosRequest) returns(PageTodosResponse);
+  rpc PushRemark(PushRemarkRequest) returns(PushRemarkResponse);
+  rpc GetRemarks(GetRemarksRequest) returns(GetRemarksResponse);
+}
