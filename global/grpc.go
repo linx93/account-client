@@ -1,14 +1,8 @@
 package global
 
 import (
-	"context"
-	"crypto/rand"
-	"crypto/sha256"
-	"encoding/base64"
-	"encoding/hex"
 	"fmt"
 	"google.golang.org/grpc"
-	"time"
 )
 
 var accountConn *grpc.ClientConn
@@ -24,7 +18,7 @@ func SetAccountConn(cc *grpc.ClientConn) {
 	accountConn = cc
 }
 
-type TokenCredential struct{}
+/*type TokenCredential struct{}
 
 func (tc TokenCredential) GetRequestMetadata(ctx context.Context, url ...string) (map[string]string, error) {
 	appId, secret := "e6abbb583d30415cbccc54ce7a305631", "2f0a2ed5d424440b9f7ebc54700109685c81c963982d4d8e853dfc409bdf6392"
@@ -48,4 +42,4 @@ func (tc TokenCredential) GetRequestMetadata(ctx context.Context, url ...string)
 
 func (tc TokenCredential) RequireTransportSecurity() bool {
 	return false
-}
+}*/
