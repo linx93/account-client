@@ -1,0 +1,30 @@
+# 配置初始化的模板
+templates:
+  "油卡余额不足":
+    title: "油卡余额不足"
+    link: ""
+    tempStr: "车辆{license}，油卡卡号{cardno}当前余额为{fee}，请及时进行充值。"
+  "油卡充值申请":
+    title: "油卡充值申请"
+    link: ""
+    tempStr: "驾驶员{driver}申请油卡充值，车牌号:{license}，油卡卡号:{card}，当前余额:{fee},申请说明:{remark}，请及时处理。"
+  "维修申请":
+    title: "维修申请"
+    link: ""
+    tempStr: "驾驶员{driver}提交了维修申请，预计维修时间为:{datetime}，请及时处理。"
+  "保养申请":
+    title: "保养申请"
+    link: ""
+    tempStr: "驾驶员{driver}提交了保养申请，预计保养时间为:{datetime}，请及时处理。"
+  "过路费申请":
+    title: "过路费申请"
+    link: ""
+    tempStr: "驾驶员{driver}提交了过路费申请，总计金额为{fee}元，请及时处理。"
+  "续保提醒":
+    title: "续保提醒"
+    link: "www.baidu.com?id={id}"
+    tempStr: "车辆{license}的保险于{datetime}过期，为了不影响业务，请及时续保。"
+  "年审提醒":
+    title: "年审提醒"
+    link: ""
+    tempStr: "车辆{license}的{year}年年审{expired}到期，请及时通知驾驶员进行年审。"
